@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Worm : Enemy
 {
@@ -22,12 +23,27 @@ public class Worm : Enemy
     {
         CheckDistance();
     }
+
     void CheckDistance()
     {
         if(Vector3.Distance(target.position, transform.position) <= chaseRadius 
-        && Vector3.Distance(target.position, transform.position) > attackRadius){
+           && Vector3.Distance(target.position, transform.position) > attackRadius)
+        {
+            // Move towards the player
             Vector3 temp = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
             myRigidbody.MovePosition(temp);
+            
+            // Flip towards the player's direction
+            if (temp.x < transform.position.x)
+            {
+                // Player is on the left side, flip the enemy to face left
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                // Player is on the right side, flip the enemy to face right
+                transform.localScale = new Vector3(1, 1, 1);
+            }
         }
     }
 }
