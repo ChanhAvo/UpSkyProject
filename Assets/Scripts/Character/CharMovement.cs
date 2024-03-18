@@ -9,6 +9,8 @@ public class NewBehaviourScript : MonoBehaviour
     private Rigidbody2D myRigidBody; 
     private Vector3 change; 
     private Animator animator;
+    public FloatValue currentHealth; 
+    public Sig playerHealthSig;
 
     void Start()
     {
@@ -43,5 +45,11 @@ public class NewBehaviourScript : MonoBehaviour
         myRigidBody.MovePosition(
             transform.position + change * speed * Time.deltaTime
         );
+    }
+    public void Knock(int baseAttack) {
+        currentHealth.initValue -= baseAttack; 
+        if(currentHealth.initValue > 0 ){
+            playerHealthSig.Raise(); 
+        }
     }
 }
